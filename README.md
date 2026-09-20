@@ -1,4 +1,4 @@
-# Welcome to Your Miaoda Project
+# Unction Mantis - Twin AI Project
 
 ## Project Info
 
@@ -35,7 +35,7 @@
 
 ## Tech Stack
 
-Vite, TypeScript, React, Supabase
+TypeScript, React, Supabase
 
 ## Development Guidelines
 

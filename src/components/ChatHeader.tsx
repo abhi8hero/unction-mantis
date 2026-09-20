@@ -1,4 +1,4 @@
-import { Menu, User, Cpu } from 'lucide-react';
+import { User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { TwinAvatar } from '@/components/TwinAvatar';
 
@@ -12,7 +12,7 @@ export function ChatHeader({ onToggleHistory, onToggleProfile, showProfileToggle
   return (
     <header className="flex shrink-0 items-center gap-3 border-b border-border bg-card/80 px-4 py-3 backdrop-blur-sm">
       {/* History toggle */}
-      <Button
+      {/* <Button
         variant="ghost"
         size="icon"
         onClick={onToggleHistory}
@@ -20,14 +20,14 @@ export function ChatHeader({ onToggleHistory, onToggleProfile, showProfileToggle
         title="Conversation history"
       >
         <Menu size={18} />
-      </Button>
+      </Button> */}
 
       {/* Identity */}
       <div className="flex flex-1 min-w-0 items-center gap-2.5">
         <TwinAvatar size="sm" />
         <div className="min-w-0">
           <div className="flex items-center gap-1.5">
-            <span className="truncate font-bold text-foreground text-sm">Twin AI</span>
+            <span className="truncate font-bold text-foreground text-sm">Unction Mantis</span>
             <span className="shrink-0 rounded-full bg-primary/15 px-1.5 py-0.5 text-[10px] font-medium text-primary">
               LIVE
             </span>
@@ -45,7 +45,7 @@ export function ChatHeader({ onToggleHistory, onToggleProfile, showProfileToggle
           className="shrink-0 text-muted-foreground hover:text-foreground md:hidden"
           title="View profile"
         >
-          <User size={18} />
+          <User size={20} />
         </Button>
       )}
 

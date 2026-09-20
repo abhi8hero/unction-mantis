@@ -11,29 +11,27 @@ import { ChatHeader } from '@/components/ChatHeader';
 import { MessageBubble } from '@/components/MessageBubble';
 import { ChatInput } from '@/components/ChatInput';
 import { SuggestionChips } from '@/components/SuggestionChips';
-import { ConversationHistory } from '@/components/ConversationHistory';
+// import { ConversationHistory } from '@/components/ConversationHistory';
 import { ProfilePanel } from '@/components/ProfilePanel';
 import { TwinAvatar } from '@/components/TwinAvatar';
 import {
   getOrCreateVisitorId,
   createSession,
   updateSessionTitle,
-  getVisitorSessions,
-  getSessionMessages,
 } from '@/services/api';
 import { sendStreamRequest } from '@/lib/sse';
-import type { ChatMessage, LLMContentMessage, Session } from '@/types/types';
+import type { ChatMessage, LLMContentMessage } from '@/types/types';
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
 
 export default function ChatPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [sessions, setSessions] = useState<Session[]>([]);
+  // const [sessions, setSessions] = useState<Session[]>([]);
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const [isStreaming, setIsStreaming] = useState(false);
-  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
-  const [showHistory, setShowHistory] = useState(false);
+  // const [isLoadingHistory, setIsLoadingHistory] = useState(false);
+  // const [showHistory, setShowHistory] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [visitorId] = useState(() => getOrCreateVisitorId());
 
@@ -47,25 +45,25 @@ export default function ChatPage() {
   }, [messages]);
 
   // Load visitor sessions on mount
-  useEffect(() => {
+  {/* useEffect(() => {
     loadSessions();
   }, [visitorId]);
 
   const loadSessions = useCallback(async () => {
     const data = await getVisitorSessions(visitorId);
     setSessions(data);
-  }, [visitorId]);
+  }, [visitorId]); */}
 
   // Start a new session
-  const startNewSession = useCallback(async () => {
+  {/* const startNewSession = useCallback(async () => {
     historyTitleSet.current = false;
     setMessages([]);
     setCurrentSessionId(null);
     setShowHistory(false);
-  }, []);
+  }, []); */}
 
   // Load an existing session
-  const loadSession = useCallback(async (sessionId: string) => {
+  {/* const loadSession = useCallback(async (sessionId: string) => {
     setIsLoadingHistory(true);
     setCurrentSessionId(sessionId);
     setShowHistory(false);
@@ -80,7 +78,7 @@ export default function ChatPage() {
     }));
     setMessages(chatMessages);
     setIsLoadingHistory(false);
-  }, []);
+  }, []); */}
 
   // Build conversation history for LLM context (last 10 exchanges = 20 messages)
   const buildLLMHistory = (msgs: ChatMessage[]): LLMContentMessage[] => {
@@ -107,7 +105,7 @@ export default function ChatPage() {
         }
         sessionId = session.session_id;
         setCurrentSessionId(sessionId);
-        setSessions((prev) => [session, ...prev]);
+        // setSessions((prev) => [session, ...prev]);
       }
 
       // Add user message to UI
@@ -126,9 +124,9 @@ export default function ChatPage() {
         historyTitleSet.current = true;
         const title = text.length > 48 ? text.slice(0, 45) + '…' : text;
         await updateSessionTitle(sessionId, title);
-        setSessions((prev) =>
-          prev.map((s) => (s.session_id === sessionId ? { ...s, title } : s))
-        );
+        {/* setSessions((prev) =>
+          prev.map((s) => (s.session_id === sessionId ? { ...s, title } : s)) 
+        );*/}
       }
 
       // Add streaming assistant placeholder
@@ -150,9 +148,9 @@ export default function ChatPage() {
         requestBody: {
           session_id: sessionId,
           message: text,
-          conversation_history: buildLLMHistory(updatedMessages),
+          conversation_history: buildLLMHistory(messages),
         },
-        supabaseAnonKey: SUPABASE_ANON_KEY,
+        supabaseAnonKey: SUPABASE_PUBLISHABLE_KEY,
         onData: (data) => {
           try {
             const parsed = JSON.parse(data);
@@ -175,8 +173,6 @@ export default function ChatPage() {
               m.id === assistantMsgId ? { ...m, isStreaming: false } : m
             )
           );
-          // Refresh session list to update message counts
-          loadSessions();
         },
         onError: (err) => {
           setIsStreaming(false);
@@ -201,7 +197,7 @@ export default function ChatPage() {
         signal: abortRef.current.signal,
       });
     },
-    [isStreaming, currentSessionId, messages, visitorId, loadSessions]
+    [isStreaming, currentSessionId, messages, visitorId]
   );
 
   const handleStop = useCallback(() => {
@@ -212,7 +208,7 @@ export default function ChatPage() {
     );
   }, []);
 
-  const showSuggestions = messages.length === 0 && !isLoadingHistory;
+  const showSuggestions = messages.length === 0;
 
   return (
     <div
@@ -220,7 +216,7 @@ export default function ChatPage() {
       style={{ background: 'var(--gradient-background, hsl(var(--background)))' }}
     >
       {/* ─── Desktop sidebar: Conversation History ─── */}
-      <aside className="hidden md:flex w-64 shrink-0 flex-col border-r border-border bg-sidebar">
+     {/* <aside className="hidden md:flex w-64 shrink-0 flex-col border-r border-border bg-sidebar">
         <ConversationHistory
           sessions={sessions}
           currentSessionId={currentSessionId}
@@ -228,12 +224,12 @@ export default function ChatPage() {
           onNewSession={startNewSession}
           onClose={() => setShowHistory(false)}
         />
-      </aside>
+      </aside> */}
 
       {/* ─── Main Chat Area ─── */}
       <div className="flex flex-1 min-w-0 flex-col">
         <ChatHeader
-          onToggleHistory={() => setShowHistory(true)}
+          // onToggleHistory={() => setShowHistory(true)}
           onToggleProfile={() => setShowProfile(true)}
           showProfileToggle={true}
         />
@@ -268,7 +264,7 @@ export default function ChatPage() {
             </AnimatePresence>
 
             {/* Loading history */}
-            {isLoadingHistory && (
+           {/* {isLoadingHistory && (
               <div className="flex justify-center py-10">
                 <span className="inline-flex gap-1.5 items-center text-xs text-muted-foreground">
                   <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary [animation-delay:0ms]" />
@@ -277,7 +273,7 @@ export default function ChatPage() {
                   Loading conversation…
                 </span>
               </div>
-            )}
+            )} */}
 
             {/* Messages */}
             {messages.map((msg, i) => (
@@ -297,8 +293,8 @@ export default function ChatPage() {
               onSend={handleSend}
               onStop={handleStop}
               isStreaming={isStreaming}
-              disabled={isLoadingHistory}
-            />
+              disabled={false}           
+               />
             <p className="text-center text-[10px] text-muted-foreground">
               Twin AI represents Abhishek's verified professional information only
             </p>
@@ -307,12 +303,12 @@ export default function ChatPage() {
       </div>
 
       {/* ─── Desktop right panel: Profile ─── */}
-      <aside className="hidden md:flex w-60 shrink-0 flex-col border-l border-border bg-card">
+      <aside className="hidden md:flex w-80 shrink-0 flex-col border-l border-border bg-card">
         <ProfilePanel />
       </aside>
 
       {/* ─── Mobile: History Sheet ─── */}
-      <Sheet open={showHistory} onOpenChange={setShowHistory}>
+     {/*<Sheet open={showHistory} onOpenChange={setShowHistory}>
         <SheetContent
           side="left"
           className="w-72 max-w-[calc(100%-2rem)] p-0 bg-sidebar border-r border-border"
@@ -325,7 +321,7 @@ export default function ChatPage() {
             onClose={() => setShowHistory(false)}
           />
         </SheetContent>
-      </Sheet>
+      </Sheet>*/}
 
       {/* ─── Mobile: Profile Sheet ─── */}
       <Sheet open={showProfile} onOpenChange={setShowProfile}>

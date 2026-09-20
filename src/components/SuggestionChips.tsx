@@ -1,12 +1,13 @@
 import { motion } from 'motion/react';
 
 const SUGGESTIONS = [
+  'Tell me about yourself',
   'Tell me about your skills',
   'What projects have you built?',
-  'Tell me about yourself',
   'What roles interest you?',
   'Walk me through your education',
   'What tools do you work with?',
+  'How I connect with you?',
 ];
 
 interface SuggestionChipsProps {

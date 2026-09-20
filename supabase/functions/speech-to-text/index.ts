@@ -46,16 +46,17 @@ serve(async (req: Request): Promise<Response> => {
   if (language) params.language = language;
 
   const upstream = await fetch(
-    "https://app-ehpsa758kttt-api-DY8MNQoqOnMa.gateway.appmedo.com/v1/audio/transcriptions",
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:streamGenerateContent?alt=sse",
     {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "X-Gateway-Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        "x-goog-api-key": Deno.env.get("GEMINI_API_KEY")!,
       },
-      body: new URLSearchParams(params).toString(),
+      body: JSON.stringify({ contents }),
     }
   );
+
 
   if (upstream.status === 429 || upstream.status === 402) {
     const errText = await upstream.text();

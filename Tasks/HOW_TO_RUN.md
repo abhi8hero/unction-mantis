@@ -51,7 +51,7 @@ Fill in your Supabase configuration:
 ```env
 # Supabase Project URL & Anon Key (from Supabase Dashboard -> Settings -> API)
 VITE_SUPABASE_URL=https://your-project-ref.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOi...your-anon-key-here...
+VITE_SUPABASE_PUBLISHABLE_KEY=eyJhbGciOi...your-anon-key-here...
 ```
 
 ---
@@ -162,13 +162,13 @@ supabase login
 supabase link --project-ref your-project-ref
 
 # Deploy Edge Functions
-supabase functions deploy chat --no-verify-jwt
+supabase functions deploy twin-ai-chat --no-verify-jwt
 supabase functions deploy speech-to-text --no-verify-jwt
 
 # Set Secret for LLM & STT API Gateway
-supabase secrets set INTEGRATIONS_API_KEY=your_gateway_api_key
+supabase secrets set GEMINI_API_KEY=your_gateway_api_key
 ```
-
+tr
 ---
 
 ## 🖥️ Running the Application

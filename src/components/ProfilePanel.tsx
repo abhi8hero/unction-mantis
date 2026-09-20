@@ -1,30 +1,20 @@
-import { ExternalLink, Github, Linkedin, FileText, Globe } from 'lucide-react';
+import { ExternalLink, Github, Linkedin, FileText, Globe, Book, TicketIcon } from 'lucide-react';
 import { TwinAvatar } from '@/components/TwinAvatar';
 
 const PROFILE = {
   name: 'Abhishek Ugare',
   title: 'Computer Engineer',
   summary:
-    'CS Engineer passionate about Data Analysis, AI/ML, and Agentic AI. Builds web apps, automation workflows, and dashboards.',
+    'CS Engineer with Hands-on experience building web applications, automation workflows, dashboards, and database driven systems. Familiar with Business Intelligence tool such as PowerBI, Machine Learning concepts, data preprocessing, and AI workflow automation tools such as n8n. Quick learner with strong analytical thinking, problem-solving abilities, and passion for building practical AI-driven solutions.',
   links: [
-    {
-      label: 'LinkedIn',
-      href: 'https://www.linkedin.com/in/abhishek-ugare-a289s85k/',
-      icon: Linkedin,
-    },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/abhishek-ugare-a289s85k/', icon: Linkedin, },
     { label: 'GitHub', href: 'https://github.com/abhi8hero', icon: Github },
-    {
-      label: 'Portfolio',
-      href: 'https://abhi8hero.github.io/portfolio-abhishek_ugare/',
-      icon: Globe,
-    },
-    {
-      label: 'Resume',
-      href: 'https://abhi8hero.github.io/portfolio-abhishek_ugare/reports/cv1.pdf',
-      icon: FileText,
-    },
+    { label: 'Portfolio', href: 'https://abhi8hero.github.io/portfolio-abhishek_ugare/', icon: Book, },
+    { label: 'Resume', href: 'https://abhi8hero.github.io/portfolio-abhishek_ugare/reports/cv1.pdf', icon: FileText, },
+    { label: 'Wellfound', href: 'https://wellfound.com/u/a289s85k', icon: Globe, },
+    { label: 'Plum Profile', href: 'https://secure.plum.io/en/fp/Ql-YMZEPBkwmVVP70LErMw', icon: TicketIcon, },
   ],
-  skills: ['N8N Automation', 'Power BI', 'Supabase', 'React', 'Data Analysis', 'AI Workflows'],
+  skills: ['N8N Automation','Power BI','Microsoft Excel','Problem Solving','Tool Adaptability','Decision Making','Analytical & Critical Thinking','Leadership','System Design & Automation','Project Planning', 'Data Analysis', 'AI Workflows'],
 };
 
 export function ProfilePanel() {

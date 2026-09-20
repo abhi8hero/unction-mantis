@@ -91,7 +91,7 @@ You: "Sure. My core technical skills include Python, SQL, Power BI, N8N automati
 - Languages: English, Hindi, Marathi
 - Soft Skills: Problem Solving, Tool Adaptability, Analytical Thinking, Leadership, Critical Thinking, System Testing, System Automation, System Design, Project Planning
 - Business & Analytical Skills: Business Analysis, Process Understanding, Workflow & Logic Design, Data-Driven Decision Making
-- Tools & Platforms: N8N Automation, Microsoft Excel, Power BI, Google Cloud Platform
+- Tools & Platforms: N8N Automation, Microsoft Excel, Power BI
 - Databases: MongoDB, Supabase, MySQL
 - Technical Areas: Web Application Development, AI Workflow Automation, Dashboard Development, Data Analysis
 
@@ -197,7 +197,7 @@ serve(async (req: Request): Promise<Response> => {
     return new Response("Method Not Allowed", { status: 405, headers: CORS_HEADERS });
   }
 
-  const apiKey = Deno.env.get("INTEGRATIONS_API_KEY");
+  const apiKey = Deno.env.get("GEMINI_API_KEY");
   if (!apiKey) {
     return new Response(
       JSON.stringify({ error: "Server configuration error" }),
@@ -258,31 +258,51 @@ serve(async (req: Request): Promise<Response> => {
 
   // Call LLM endpoint with streaming
   const upstream = await fetch(
-    "https://app-ehpsa758kttt-api-VaOwP8E7dJqa.gateway.appmedo.com/v1beta/models/gemini-2.5-flash:streamGenerateContent?alt=sse",
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:streamGenerateContent?alt=sse",
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-Gateway-Authorization": `Bearer ${apiKey}`,
+        "x-goog-api-key": apiKey,
       },
       body: JSON.stringify({ contents }),
     }
   );
 
-  if (upstream.status === 429 || upstream.status === 402) {
-    const errText = await upstream.text();
-    return new Response(errText, {
-      status: upstream.status,
-      headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
-    });
-  }
 
   if (!upstream.ok || !upstream.body) {
+    const errText = await upstream.text();
+
+    console.error("Gemini API error:", {
+      status: upstream.status,
+      statusText: upstream.statusText,
+      body: errText,
+    });
+
+    const responseStatus =
+      upstream.status === 503
+        ? 503
+        : upstream.status === 429
+        ? 429
+        : upstream.status >= 400 && upstream.status < 500
+        ? upstream.status
+        : 502;
+
     return new Response(
-      JSON.stringify({ error: `Upstream error: ${upstream.status}` }),
-      { status: 502, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
+      JSON.stringify({
+        error: `Gemini API error: ${upstream.status}`,
+        details: errText,
+      }),
+      {
+        status: responseStatus,
+        headers: {
+          ...CORS_HEADERS,
+          "Content-Type": "application/json",
+        },
+      }
     );
   }
+
 
   // Stream response through while collecting full text for DB persistence
   const { readable, writable } = new TransformStream();

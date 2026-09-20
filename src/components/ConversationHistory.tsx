@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+{/* import { motion } from 'motion/react';
 import { formatDistanceToNow } from 'date-fns';
 import { MessageSquare, Plus, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -28,9 +28,9 @@ export function ConversationHistory({
       exit={{ opacity: 0, x: -20 }}
       transition={{ duration: 0.22 }}
       className="flex h-full flex-col bg-sidebar"
-    >
+    > */} 
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-sidebar-border px-4 py-3">
+      {/* <div className="flex items-center justify-between border-b border-sidebar-border px-4 py-3">
         <span className="gallery-label text-xs text-sidebar-foreground">Conversations</span>
         <button
           onClick={onClose}
@@ -38,10 +38,10 @@ export function ConversationHistory({
         >
           <X size={16} />
         </button>
-      </div>
+      </div> */}
 
       {/* New Conversation */}
-      <div className="px-3 py-2">
+      {/* <div className="px-3 py-2">
         <Button
           onClick={onNewSession}
           variant="ghost"
@@ -50,10 +50,10 @@ export function ConversationHistory({
           <Plus size={15} />
           <span className="text-sm">New Conversation</span>
         </Button>
-      </div>
+      </div> */}
 
       {/* Sessions list */}
-      <ScrollArea className="flex-1 px-2">
+      {/* <ScrollArea className="flex-1 px-2">
         <div className="space-y-1 pb-4">
           {sessions.length === 0 && (
             <div className="px-3 py-8 text-center text-xs text-muted-foreground">
@@ -94,3 +94,4 @@ export function ConversationHistory({
     </motion.div>
   );
 }
+*/}
